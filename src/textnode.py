@@ -1,3 +1,7 @@
+from enum import Enum
+
+TextType = Enum("TextType", ["TEXT", "BOLD", "ITALIC", "CODE", "LINK", "IMAGE"])
+
 class TextNode:
     def __init__(self, text, text_type, url=None):
         self.text = text
