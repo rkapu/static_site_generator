@@ -10,10 +10,7 @@ class LeafNode(HTMLNode):
         if self.tag is None:
             return self.value
 
-        starting_tag = f"<{self.tag}{self.props_to_html()}>"
-        closing_tag = f"</{self.tag}>"
-
-        return starting_tag + self.value + closing_tag
+        return self.opening_tag() + self.value + self.closing_tag()
 
     def __repr__(self):
         return f"LeafNode({self.tag}, {self.value}, {self.props})"

@@ -23,3 +23,23 @@ class TestHTMLNode(unittest.TestCase):
         children_node = HTMLNode("img", None, None, props={"source": "http://boot.dev/img.jpg", "alt": "test image"})
         node = HTMLNode("a", "boot.dev", [children_node], props={"href": "https://boot.dev", "target": "_blank"})
         self.assertEqual("HTMLNode(a, boot.dev, 1 children, {'href': 'https://boot.dev', 'target': '_blank'})", str(node))
+
+    def test_opening_tag_with_none(self):
+        node = HTMLNode()
+        self.assertEqual("", node.opening_tag())
+
+    def test_opening_tag_with_props(self):
+        node = HTMLNode("a", "boot.dev", None, props={"href": "https://boot.dev", "target": "_blank"})
+        self.assertEqual('<a href="https://boot.dev" target="_blank">', node.opening_tag())
+
+    def test_opening_tag_without_props(self):
+        node = HTMLNode("a", "boot.dev", None, None)
+        self.assertEqual('<a>', node.opening_tag())
+
+    def test_closing_tag_with_none(self):
+        node = HTMLNode()
+        self.assertEqual("", node.closing_tag())
+
+    def test_closing_tag(self):
+        node = HTMLNode("a", "boot.dev", None, None)
+        self.assertEqual('</a>', node.closing_tag())

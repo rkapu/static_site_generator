@@ -25,3 +25,15 @@ class HTMLNode():
             children_str = self.children
 
         return f"HTMLNode({self.tag}, {self.value}, {children_str}, {self.props})"
+
+    def opening_tag(self):
+        if self.tag is None:
+            return ""
+
+        return f"<{self.tag}{self.props_to_html()}>"
+
+    def closing_tag(self):
+        if self.tag is None:
+            return ""
+
+        return f"</{self.tag}>"
