@@ -1,5 +1,5 @@
 import unittest
-from helpers import text_node_to_html_node
+from helpers import split_nodes_delimiter, text_node_to_html_node
 from textnode import TextType, TextNode
 
 class TestHelpers(unittest.TestCase):
@@ -26,3 +26,80 @@ class TestHelpers(unittest.TestCase):
         with self.assertRaises(ValueError) as e:
             text_node_to_html_node(text_node)
         self.assertEqual("Invalid text type: divider", str(e.exception))
+
+    def test_split_nodes_delimiter(self):
+        test_cases = [
+            [
+                (
+                    [TextNode("This is text with a `code block` word", TextType.TEXT)],
+                    "`",
+                    TextType.CODE
+                ),
+                [
+                    TextNode("This is text with a ", TextType.TEXT),
+                    TextNode("code block", TextType.CODE),
+                    TextNode(" word", TextType.TEXT),
+                ]
+            ],
+            [
+                (
+                    [TextNode("This is **text** with **bold** words", TextType.TEXT)],
+                    "**",
+                    TextType.BOLD
+                ),
+                [
+                    TextNode("This is ", TextType.TEXT),
+                    TextNode("text", TextType.BOLD),
+                    TextNode(" with ", TextType.TEXT),
+                    TextNode("bold", TextType.BOLD),
+                    TextNode(" words", TextType.TEXT),
+                ]
+            ],
+            [
+                (
+                    [TextNode("This is *text* with *italic* words", TextType.TEXT)],
+                    "*",
+                    TextType.ITALIC
+                ),
+                [
+                    TextNode("This is ", TextType.TEXT),
+                    TextNode("text", TextType.ITALIC),
+                    TextNode(" with ", TextType.TEXT),
+                    TextNode("italic", TextType.ITALIC),
+                    TextNode(" words", TextType.TEXT),
+                ]
+            ],
+            [
+                (
+                    split_nodes_delimiter(
+                        [TextNode("This is *text* with *italic* and **bold** words together", TextType.TEXT)],
+                        "**",
+                        TextType.BOLD
+                    ),
+                    "*",
+                    TextType.ITALIC
+                ),
+                [
+                    TextNode("This is ", TextType.TEXT),
+                    TextNode("text", TextType.ITALIC),
+                    TextNode(" with ", TextType.TEXT),
+                    TextNode("italic", TextType.ITALIC),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("bold", TextType.BOLD),
+                    TextNode(" words together", TextType.TEXT),
+                ]
+            ]
+        ]
+
+        for t in test_cases:
+            self.assertEqual(
+                split_nodes_delimiter(*t[0]),
+                t[1]
+            )
+
+    def test_split_nodes_delimiter_invalid_markdown(self):
+        text_node = [TextNode("This is *text* with **invalid markdown", TextType.TEXT)]
+        with self.assertRaises(ValueError) as e:
+            split_nodes_delimiter(text_node, "**", TextType.ITALIC)
+        self.assertEqual("Invalid markdown, formatted section not closed", str(e.exception))
+
