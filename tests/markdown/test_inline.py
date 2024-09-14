@@ -1,61 +1,9 @@
 import unittest
-import textwrap
-from src.helpers import *
-from src.markdown.textnode import TextType, TextNode
+from tests.helpers import *
+from src.markdown.textnode import *
+from src.markdown.inline import *
 
-class TestHelpers(unittest.TestCase):
-    def assert_all_cases(self, test_cases, test_function, transform_result_function = lambda x: x):
-        for t in test_cases:
-            if not isinstance(t[0], tuple):
-                inputs = (t[0],)
-            else:
-                inputs = t[0]
-
-            self.assertEqual(
-                transform_result_function(test_function(*inputs)),
-                t[1]
-            )
-
-    def test_text_node_to_html_node_with_valid_text_types(self):
-        test_cases = [
-            [
-                TextNode("test text", TextType.TEXT, None),
-                (None, "test text", None)
-            ],
-            [
-                TextNode("test text", TextType.BOLD, None),
-                ("b", "test text", None)
-            ],
-            [
-                TextNode("test text", TextType.ITALIC, None),
-                ("i", "test text", None)
-            ],
-            [
-                TextNode("test text", TextType.CODE, None),
-                ("code", "test text", None)
-            ],
-            [
-                TextNode("test text", TextType.LINK, "https://boot.dev"),
-                ("a", "test text", {"href": "https://boot.dev"})
-            ],
-            [
-                TextNode("test image text", TextType.IMAGE, "https://boot.dev"),
-                ("img", "", {"src": "https://boot.dev", "alt": "test image text"})
-            ]
-        ]
-
-        self.assert_all_cases(
-            test_cases,
-            text_node_to_html_node,
-            lambda leaf_node: (leaf_node.tag, leaf_node.value, leaf_node.props)
-        )
-
-    def test_text_node_to_html_node_with_invalid_text_type(self):
-        text_node = TextNode("test text", "divider", None)
-        with self.assertRaises(ValueError) as e:
-            text_node_to_html_node(text_node)
-        self.assertEqual("Invalid text type: divider", str(e.exception))
-
+class TestInline(unittest.TestCase):
     def test_split_nodes_delimiter(self):
         test_cases = [
             [
@@ -138,7 +86,7 @@ class TestHelpers(unittest.TestCase):
             ]
         ]
 
-        self.assert_all_cases(test_cases, split_nodes_delimiter)
+        assert_all_cases(self, test_cases, split_nodes_delimiter)
 
     def test_split_nodes_delimiter_invalid_markdown(self):
         text_node = [TextNode("This is *text* with **invalid markdown", TextType.TEXT)]
@@ -165,7 +113,7 @@ class TestHelpers(unittest.TestCase):
             ]
         ]
 
-        self.assert_all_cases(test_cases, extract_markdown_images)
+        assert_all_cases(self, test_cases, extract_markdown_images)
 
     def test_extract_markdown_links(self):
         test_cases = [
@@ -186,7 +134,7 @@ class TestHelpers(unittest.TestCase):
             ]
         ]
 
-        self.assert_all_cases(test_cases, extract_markdown_links)
+        assert_all_cases(self, test_cases, extract_markdown_links)
 
     def test_split_nodes_images(self):
         test_cases = [
@@ -244,7 +192,7 @@ class TestHelpers(unittest.TestCase):
             ]
         ]
 
-        self.assert_all_cases(test_cases, split_nodes_images)
+        assert_all_cases(self, test_cases, split_nodes_image)
 
     def test_split_nodes_links(self):
         test_cases = [
@@ -302,7 +250,7 @@ class TestHelpers(unittest.TestCase):
             ]
         ]
 
-        self.assert_all_cases(test_cases, split_nodes_links)
+        assert_all_cases(self, test_cases, split_nodes_link)
 
 
     def test_text_to_textnodes(self):
@@ -322,24 +270,5 @@ class TestHelpers(unittest.TestCase):
         ]
         self.assertEqual(expected_result, text_to_textnodes(text)) 
 
-    def test_markdown_to_blocks(self):
-        markdown = textwrap.dedent("""\
-        # This is a heading
-
-        This is a paragraph of text. It has some **bold** and *italic* words inside of it.
-
-
-
-        * This is the first list item in a list block
-        * This is a list item
-        * This is another list item
-
-
-        """)
-        expected_result = [
-            "# This is a heading",
-            "This is a paragraph of text. It has some **bold** and *italic* words inside of it.",
-            "* This is the first list item in a list block\n* This is a list item\n* This is another list item"
-        ]
-
-        self.assertEqual(expected_result, markdown_to_blocks(markdown))
+if __name__ == "__main__":
+    unittest.main()

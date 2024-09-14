@@ -43,3 +43,6 @@ class TestHTMLNode(unittest.TestCase):
     def test_closing_tag(self):
         node = HTMLNode("a", "boot.dev", None, None)
         self.assertEqual('</a>', node.closing_tag())
+
+if __name__ == "__main__":
+    unittest.main()

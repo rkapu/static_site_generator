@@ -44,3 +44,6 @@ class TestParentNode(unittest.TestCase):
             ],
         )
         self.assertEqual("<div><p><b>Bold text</b><i>italic text</i></p>Normal text</div>", node.to_html())
+
+if __name__ == "__main__":
+    unittest.main()

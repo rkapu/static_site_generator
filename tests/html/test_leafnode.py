@@ -22,3 +22,6 @@ class TestLeafNode(unittest.TestCase):
     def test_representation(self):
         node = LeafNode("a", "Click me!", {"href": "https://www.google.com"})
         self.assertEqual("LeafNode(a, Click me!, {'href': 'https://www.google.com'})", str(node))
+
+if __name__ == "__main__":
+    unittest.main()
