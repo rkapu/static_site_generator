@@ -1,6 +1,6 @@
 import unittest
-from helpers import *
-from textnode import TextType, TextNode
+from src.helpers import *
+from src.markdown.textnode import TextType, TextNode
 
 class TestHelpers(unittest.TestCase):
     def assert_all_cases(self, test_cases, test_function, transform_result_function = lambda x: x):

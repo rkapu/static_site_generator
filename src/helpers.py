@@ -1,7 +1,7 @@
 import re
 
-from textnode import TextType, TextNode
-from leafnode import LeafNode
+from .markdown.textnode import TextType, TextNode
+from .html.leafnode import LeafNode
 
 def text_node_to_html_node(text_node):
     match (text_node.text_type):

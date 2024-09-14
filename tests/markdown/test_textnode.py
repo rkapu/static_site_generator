@@ -1,6 +1,6 @@
 import unittest
 
-from textnode import TextNode
+from src.markdown.textnode import TextNode
 
 class TestTextNode(unittest.TestCase):
     def test_eq_without_url(self):
