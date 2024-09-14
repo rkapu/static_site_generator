@@ -139,6 +139,12 @@ class TestInline(unittest.TestCase):
     def test_split_nodes_images(self):
         test_cases = [
             [
+                [TextNode("![rick roll](https://i.imgur.com/aKaOqIh.gif)", TextType.TEXT)],
+                [
+                    TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+                ]
+            ],
+            [
                 [TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT)],
                 [
                     TextNode("This is text with a ", TextType.TEXT),
@@ -196,6 +202,12 @@ class TestInline(unittest.TestCase):
 
     def test_split_nodes_links(self):
         test_cases = [
+            [
+                [TextNode("[to boot dev](https://www.boot.dev)", TextType.TEXT)],
+                [
+                    TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+                ]
+            ],
             [
                 [TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)],
                 [

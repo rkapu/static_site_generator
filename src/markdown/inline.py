@@ -80,7 +80,8 @@ def _split_links_in_text_node(node, extract_func, split_format, text_type):
     search_text = node.text
     for text, link in links:
         head, search_text = search_text.split(split_format.format(text, link), 1)
-        splits.append(TextNode(head, TextType.TEXT))
+        if head != "":
+            splits.append(TextNode(head, TextType.TEXT))
         splits.append(TextNode(text, text_type, link))
 
     if search_text != "":
