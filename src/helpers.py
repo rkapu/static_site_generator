@@ -85,6 +85,19 @@ def text_to_textnodes(text):
 
     return nodes
 
+def markdown_to_blocks(markdown):
+    return list(
+        filter(
+            None,
+            map(
+                lambda x: x.strip(),
+                markdown.split("\n\n")
+            )
+        )
+    )
+
+# Private functions
+
 def _split_links_in_text_node(node, extract_func, split_format, text_type):
     if node.text_type != TextType.TEXT:
         return [node]
@@ -104,4 +117,3 @@ def _split_links_in_text_node(node, extract_func, split_format, text_type):
         splits.append(TextNode(search_text, TextType.TEXT))
 
     return splits
-
