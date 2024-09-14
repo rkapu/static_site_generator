@@ -71,6 +71,24 @@ class TestHelpers(unittest.TestCase):
             ],
             [
                 (
+                    [
+                        TextNode("This is text with a `code block` word", TextType.TEXT),
+                        TextNode("And this text has a `code block two` too", TextType.TEXT)
+                    ],
+                    "`",
+                    TextType.CODE
+                ),
+                [
+                    TextNode("This is text with a ", TextType.TEXT),
+                    TextNode("code block", TextType.CODE),
+                    TextNode(" word", TextType.TEXT),
+                    TextNode("And this text has a ", TextType.TEXT),
+                    TextNode("code block two", TextType.CODE),
+                    TextNode(" too", TextType.TEXT),
+                ]
+            ],
+            [
+                (
                     [TextNode("This is **text** with **bold** words", TextType.TEXT)],
                     "**",
                     TextType.BOLD
