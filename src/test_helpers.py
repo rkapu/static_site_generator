@@ -186,3 +186,99 @@ class TestHelpers(unittest.TestCase):
         ]
 
         self.assert_all_cases(test_cases, extract_markdown_links)
+
+    def test_split_nodes_images(self):
+        test_cases = [
+            [
+                [TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT)],
+                [
+                    TextNode("This is text with a ", TextType.TEXT),
+                    TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("obi wan", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg")
+                ]
+            ],
+            [
+                [TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![rick roll](https://i.imgur.com/aKaOqIh.gif)", TextType.TEXT)],
+                [
+                    TextNode("This is text with a ", TextType.TEXT),
+                    TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+                ]
+            ],
+            [
+                [
+                    TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT),
+                    TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![rick roll](https://i.imgur.com/aKaOqIh.gif)", TextType.TEXT),
+                ],
+                [
+                    TextNode("This is text with a ", TextType.TEXT),
+                    TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("obi wan", TextType.IMAGE, "https://i.imgur.com/fJRm4Vk.jpeg"),
+                    TextNode("This is text with a ", TextType.TEXT),
+                    TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("rick roll", TextType.IMAGE, "https://i.imgur.com/aKaOqIh.gif"),
+                ]
+            ],
+            [
+                [TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)],
+                [TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)]
+            ],
+            [
+                [TextNode("This is text without images", TextType.TEXT)],
+                [TextNode("This is text without images", TextType.TEXT)]
+            ]
+        ]
+
+        self.assert_all_cases(test_cases, split_nodes_images)
+
+    def test_split_nodes_links(self):
+        test_cases = [
+            [
+                [TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT)],
+                [
+                    TextNode("This is text with a link ", TextType.TEXT),
+                    TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev")
+                ]
+            ],
+            [
+                [TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to boot dev](https://www.boot.dev)", TextType.TEXT)],
+                [
+                    TextNode("This is text with a link ", TextType.TEXT),
+                    TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("to boot dev", TextType.LINK, "https://www.boot.dev")
+                ]
+            ],
+            [
+                [
+                    TextNode("This is text with a link [to google](https://www.google.com) and [to youtube](https://www.youtube.com/@bootdotdev)", TextType.TEXT),
+                    TextNode("This is text with a link [to boot dev](https://www.boot.dev) and [to github](https://www.github.com)", TextType.TEXT)
+                ],
+                [
+                    TextNode("This is text with a link ", TextType.TEXT),
+                    TextNode("to google", TextType.LINK, "https://www.google.com"),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("to youtube", TextType.LINK, "https://www.youtube.com/@bootdotdev"),
+                    TextNode("This is text with a link ", TextType.TEXT),
+                    TextNode("to boot dev", TextType.LINK, "https://www.boot.dev"),
+                    TextNode(" and ", TextType.TEXT),
+                    TextNode("to github", TextType.LINK, "https://www.github.com")
+                ]
+            ],
+            [
+                [TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT)],
+                [TextNode("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)", TextType.TEXT)]
+            ],
+            [
+                [TextNode("This is text without images", TextType.TEXT)],
+                [TextNode("This is text without images", TextType.TEXT)]
+            ]
+        ]
+
+        self.assert_all_cases(test_cases, split_nodes_links)
