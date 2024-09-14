@@ -75,6 +75,16 @@ def split_nodes_links(old_nodes):
 
     return new_nodes
 
+def text_to_textnodes(text):
+    nodes = [TextNode(text, TextType.TEXT)]
+    nodes = split_nodes_delimiter(nodes, "**", TextType.BOLD)
+    nodes = split_nodes_delimiter(nodes, "*", TextType.ITALIC)
+    nodes = split_nodes_delimiter(nodes, "`", TextType.CODE)
+    nodes = split_nodes_images(nodes)
+    nodes = split_nodes_links(nodes)
+
+    return nodes
+
 def _split_links_in_text_node(node, extract_func, split_format, text_type):
     if node.text_type != TextType.TEXT:
         return [node]
