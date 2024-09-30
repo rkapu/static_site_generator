@@ -1,10 +1,18 @@
-from .markdown.textnode import TextNode
-from .helpers import *
+import os
+import shutil
+
+from copy_helper import copy_files_recursively
 
 def main():
-    result = extract_markdown_links("This is text with a ![rick roll](https://i.imgur.com/aKaOqIh.gif) and ![obi wan](https://i.imgur.com/fJRm4Vk.jpeg)")
-    print(result)
-    result = extract_markdown_links("This is text with a link [to boot dev](https://www.boot.dev) and [to youtube](https://www.youtube.com/@bootdotdev)")
-    print(result)
+    main_dir = os.path.dirname(os.path.dirname(__file__))
+    static_dir = os.path.join(main_dir, "static")
+    public_dir = os.path.join(main_dir, "public")
+
+    if os.path.exists(public_dir):
+        print("Deleting public directory...")
+        shutil.rmtree(public_dir)
+
+    print("Copying static files into public directory...")
+    copy_files_recursively(static_dir, public_dir)
 
 main()
