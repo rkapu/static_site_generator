@@ -1,33 +1,10 @@
 import unittest
-import textwrap
 
-from src.markdown.blocks import *
+from src.markdown.block import *
 from tests.helpers import assert_all_cases
 
 class TestBlocks(unittest.TestCase):
-    def test_markdown_to_blocks(self):
-        markdown = textwrap.dedent("""\
-        # This is a heading
-
-        This is a paragraph of text. It has some **bold** and *italic* words inside of it.
-
-
-
-        * This is the first list item in a list block
-        * This is a list item
-        * This is another list item
-
-
-        """)
-        expected_result = [
-            "# This is a heading",
-            "This is a paragraph of text. It has some **bold** and *italic* words inside of it.",
-            "* This is the first list item in a list block\n* This is a list item\n* This is another list item"
-        ]
-
-        self.assertEqual(expected_result, markdown_to_blocks(markdown))
-
-    def test_block_to_block_type(self):
+    def test_block_type(self):
         test_cases = [
             # Heading
             ["# Heading", BlockType.HEADING],
@@ -82,7 +59,7 @@ class TestBlocks(unittest.TestCase):
             ["*This* is just a paragraph\n#paragraph", BlockType.PARAGRAPH]
         ]
 
-        assert_all_cases(self, test_cases, block_to_block_type)
+        assert_all_cases(self, test_cases, lambda x: Block(x).type)
 
 if __name__ == "__main__":
     unittest.main()
