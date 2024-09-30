@@ -12,5 +12,5 @@ def copy_files_recursively(src_dir_path, dst_dir_path):
             print(f" * {from_path} -> {to_path}")
             if entry.is_file():
                 shutil.copy(from_path, to_path)
-            else:
+            elif entry.is_dir():
                 copy_files_recursively(from_path, to_path)
